@@ -2,17 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// MAKE A FUCKING PROPER INPUT HANDLER INSTEAD OF THIS SHIT
+
 public class MousetoWorld : MonoBehaviour
 {
     public GameObject mouseClickIcon;
     public SteeringBehaviour playerSteering;
+    public Summoner playerSummoning;
     public float iconLifeTime = 5;
 
     public void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0)) ;
         {
-            playerSteering.SetTargetPosition(GetMouseWorldSpace());
+            if (Input.GetKey(KeyCode.LeftControl))
+            {
+                if(playerSummoning.summonDelta >= playerSummoning.summoningTime)
+                {
+                    playerSummoning.SummonObject(GetMouseWorldSpace());
+                    playerSummoning.summonDelta = 0;
+                }
+            }
+            else playerSteering.SetTargetPosition(GetMouseWorldSpace());
         }
     }
 
