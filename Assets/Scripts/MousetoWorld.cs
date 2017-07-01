@@ -9,21 +9,14 @@ public class MousetoWorld : MonoBehaviour
     public GameObject mouseClickIcon;
     public SteeringBehaviour playerSteering;
     public Summoner playerSummoning;
+    public float distanceToSurface = 10;
     public float iconLifeTime = 5;
 
-    public void Update()
+    private void Update()
     {
-        if (Input.GetMouseButtonDown(0)) ;
+        if(Input.GetMouseButtonDown(0))
         {
-            if (Input.GetKey(KeyCode.LeftControl))
-            {
-                if(playerSummoning.summonDelta >= playerSummoning.summoningTime)
-                {
-                    playerSummoning.SummonObject(GetMouseWorldSpace());
-                    playerSummoning.summonDelta = 0;
-                }
-            }
-            else playerSteering.SetTargetPosition(GetMouseWorldSpace());
+            GetMouseWorldSpace();
         }
     }
 
@@ -32,7 +25,7 @@ public class MousetoWorld : MonoBehaviour
         Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if(Physics.Raycast(mouseRay, out hit, Mathf.Infinity))
+        if(Physics.Raycast(mouseRay, out hit, distanceToSurface))
         {
             Vector3 trueHit = new Vector3(hit.point.x, hit.point.y + (mouseClickIcon.transform.lossyScale.y), hit.point.z);
 
@@ -41,6 +34,7 @@ public class MousetoWorld : MonoBehaviour
             return trueHit;
         }
 
+        Debug.Log("Did Not Hit Surface");
         return new Vector3();
     }
 }
